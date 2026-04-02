@@ -18,16 +18,28 @@ import { createReport, fetchMyReports, downloadReport } from "@/slices/reports/t
 import { clearError } from "@/slices/reports/reportsSlice";
 import type { AppDispatch, RootState } from "@/app/store";
 import Loader from "@/shared/ui/Loader";
+import { useNavigate } from "react-router";
+import { BackToPrevious } from "@/shared/ui/BackButton";
+import { PATHS } from "@/constants/path";
 
 const ReportsPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { reports, loading, downloading, error } = useSelector((state: RootState) => state.reports);
   const [reportType, setReportType] = useState("usage");
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: new Date(new Date().setDate(new Date().getDate() - 30)),
     to: new Date(),
   });
   const [generating, setGenerating] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { reports, loading, downloading, error } = useSelector((state: RootState) => state.reports);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate(PATHS.login);
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     dispatch(fetchMyReports());
@@ -95,13 +107,18 @@ const ReportsPage = () => {
     return types[type] || type;
   };
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   if (loading && reports.length === 0) {
     return <Loader />;
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-4xl px-4 py-8">
+      <div className="mx-auto container px-4 py-8">
+        <BackToPrevious />
         <Card>
           <CardHeader>
             <CardTitle>Generate Reports</CardTitle>

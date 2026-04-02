@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,13 +26,25 @@ import type { AppDispatch, RootState } from "@/app/store";
 import toast from "react-hot-toast";
 import { formatBytes, formatMimeType } from "@/lib/formatters";
 import Loader from "@/shared/ui/Loader";
+import { BackToPrevious } from "@/shared/ui/BackButton";
+import { PATHS } from "@/constants/path";
 
 const AssetsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
   const { assets, pagination, loading } = useSelector((state: RootState) => state.assets);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate(PATHS.root);
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -68,13 +81,18 @@ const AssetsPage = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   if (loading && assets.length === 0) {
     return <Loader />;
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-8">
+      <div className="mx-auto container px-4 py-8">
+        <BackToPrevious />
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-3xl font-bold text-foreground">My Assets</h1>

@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useCallback, useMemo } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload, X, File, Trash2, Plus } from "lucide-react";
 import toast from "react-hot-toast";
@@ -25,15 +25,16 @@ const UploadForm = ({ onSubmit, isUploading }: UploadFormProps) => {
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     formState: { errors },
   } = useForm<UploadFormData>({
     resolver: zodResolver(uploadSchema),
     defaultValues: { files: [], description: "", tags: [] },
   });
 
-  const files = watch("files");
-  const tags = watch("tags") || [];
+  const files = useWatch({ control, name: "files" });
+  const watchedTags = useWatch({ control, name: "tags" });
+  const tags = useMemo(() => watchedTags || [], [watchedTags]);
 
   const validateFile = useCallback((file: File) => {
     if (!ALLOWED_MIME_TYPES.includes(file.type)) {

@@ -4,6 +4,9 @@ import dashboardReducer from "@/slices/dashboard/dashboardSlice";
 import assetsReducer from "@/slices/assets/assetsSlice";
 import analyticsReducer from "@/slices/analytics/analyticsSlice";
 import reportsReducer from "@/slices/reports/reportsSlice";
+import tagsReducer from "@/slices/tags/tagsSlice";
+import usageReducer from "@/slices/usage/usageSlice";
+import jobsReducer from "@/slices/jobs/jobsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +15,9 @@ export const store = configureStore({
     assets: assetsReducer,
     analytics: analyticsReducer,
     reports: reportsReducer,
+    tags: tagsReducer,
+    usage: usageReducer,
+    jobs: jobsReducer,
   },
 });
 

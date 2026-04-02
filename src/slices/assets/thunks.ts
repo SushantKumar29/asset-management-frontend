@@ -43,7 +43,11 @@ export const uploadAssets = createAsyncThunk(
       const res = await api.post("/assets/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      return camelize(res.data.data) || res.data;
+      const data = camelize(res.data.data);
+      return {
+        uploaded: data.uploaded || [],
+        message: data.message || `${data.uploaded?.length || 0} assets uploaded`,
+      };
     } catch (err) {
       return rejectWithValue((err as Error).message || "Failed to upload assets");
     }

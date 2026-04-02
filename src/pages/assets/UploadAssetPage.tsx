@@ -1,14 +1,23 @@
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import toast from "react-hot-toast";
 import { uploadAssets } from "@/slices/assets/thunks";
-import type { AppDispatch } from "@/app/store";
+import type { AppDispatch, RootState } from "@/app/store";
 import UploadForm from "@/components/forms/UploadForm";
+import { useEffect } from "react";
+import { BackToPrevious } from "@/shared/ui/BackButton";
+import { PATHS } from "@/constants/path";
 
 const UploadAssetPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate(PATHS.login);
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleUpload = async (formData: FormData) => {
     try {
@@ -26,9 +35,14 @@ const UploadAssetPage = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-3xl px-4 py-8">
+      <div className="mx-auto container px-4 py-8">
+        <BackToPrevious />
         <Card>
           <CardHeader>
             <CardTitle>Upload Assets</CardTitle>

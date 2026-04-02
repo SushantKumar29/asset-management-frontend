@@ -12,10 +12,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ROLES } from "@/constants/auth";
+import { PATHS } from "@/constants/path";
 
 const Navbar = () => {
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
+  const isAdmin = user?.role === ROLES.admin;
 
   const getUserInitial = () => {
     return user?.name?.[0]?.toUpperCase() || "U";
@@ -23,7 +26,7 @@ const Navbar = () => {
 
   return (
     <header className="border-b border-border bg-background shadow-sm">
-      <div className="mx-auto max-w-7xl px-4 py-4">
+      <div className="mx-auto container px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="text-2xl font-bold">
             Asset Management
@@ -49,10 +52,17 @@ const Navbar = () => {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to="/my-assets" className="cursor-pointer">
+                  <Link to={PATHS.assets} className="cursor-pointer">
                     My Assets
                   </Link>
                 </DropdownMenuItem>
+                {isAdmin && (
+                  <DropdownMenuItem asChild>
+                    <Link to={PATHS.jobs} className="cursor-pointer">
+                      Jobs
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={() => dispatch(logout())}
@@ -64,10 +74,10 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-3">
-              <Link to="/login">
+              <Link to={PATHS.login}>
                 <Button variant="outline">Login</Button>
               </Link>
-              <Link to="/signup">
+              <Link to={PATHS.signup}>
                 <Button>Sign Up</Button>
               </Link>
             </div>

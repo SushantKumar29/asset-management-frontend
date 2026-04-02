@@ -8,7 +8,13 @@ export interface Asset {
   views: number;
   downloads: number;
   status: string;
+  path: string;
+  checksum: string;
+  ownerName: string;
+  processingStatus: object;
+  ownerId: string;
   createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface PopularAssetsProps {
@@ -18,4 +24,17 @@ export interface PopularAssetsProps {
 export interface UploadFormProps {
   onSubmit: (data: FormData) => Promise<void>;
   isUploading: boolean;
+}
+
+export interface AssetsState {
+  assets: Asset[];
+  pagination: {
+    total: number;
+    limit: number;
+    offset: number;
+  };
+  currentAsset: Asset | null;
+  loading: boolean;
+  error: string | null;
+  uploadMessage: string | null;
 }

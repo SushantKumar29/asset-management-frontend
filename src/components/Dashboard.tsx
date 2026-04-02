@@ -16,25 +16,16 @@ import StatsCards from "@/components/dashboard/StatsCards";
 import Loader from "@/shared/ui/Loader";
 import { CardSkeleton } from "@/shared/ui/CardSkeleton";
 import { ErrorFallback } from "@/shared/ui/ErrorFallback";
+import QuickActions from "./dashboard/QuickActions";
 
 const PopularAssets = lazy(() => import("@/components/dashboard/PopularAssets"));
-// const RecentActivity = lazy(
-// 	() => import("@/components/dashboard/RecentActivity"),
-// );
-
-const QuickActions = lazy(() => import("@/components/dashboard/QuickActions"));
 
 const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
-  const {
-    summary,
-    typeDistribution,
-    popularAssets,
-    // recentActivity,
-    loading,
-    error,
-  } = useSelector((state: RootState) => state.dashboard);
+  const { summary, typeDistribution, popularAssets, loading, error } = useSelector(
+    (state: RootState) => state.dashboard
+  );
 
   useEffect(() => {
     dispatch(fetchAssetSummary());
@@ -60,11 +51,13 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-8">
+      <div className="mx-auto container px-4 py-8">
         <DashboardHeader userName={user?.name} />
         <StatsCards summary={summary} distribution={typeDistribution} />
+        <div className="mt-8">
+          <QuickActions />
+        </div>
 
-        {/* Popular Assets - with proper error boundary */}
         <div className="mt-8">
           <ErrorBoundary
             fallback={({ error, resetErrorBoundary }) => (
@@ -74,43 +67,9 @@ const Dashboard = () => {
                 title="Failed to load popular assets"
               />
             )}
-            onError={(error) => console.error("PopularAssets error:", error)}
           >
             <Suspense fallback={<CardSkeleton />}>
               <PopularAssets assets={popularAssets} />
-            </Suspense>
-          </ErrorBoundary>
-        </div>
-
-        {/* {recentActivity && (
-					<div className='mt-8'>
-						<ErrorBoundary
-							fallback={
-								<ComponentErrorFallback
-									error={new Error()}
-									resetErrorBoundary={() => {}}
-								/>
-							}
-						>
-							<Suspense fallback={<CardSkeleton />}>
-								<RecentActivity activities={recentActivity} />
-							</Suspense>
-						</ErrorBoundary>
-					</div>
-				)} */}
-
-        <div className="mt-8">
-          <ErrorBoundary
-            fallback={({ error, resetErrorBoundary }) => (
-              <ErrorFallback
-                error={error}
-                resetErrorBoundary={resetErrorBoundary}
-                title="Failed to load quick actions"
-              />
-            )}
-          >
-            <Suspense fallback={<CardSkeleton />}>
-              <QuickActions />
             </Suspense>
           </ErrorBoundary>
         </div>

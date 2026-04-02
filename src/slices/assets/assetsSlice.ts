@@ -1,18 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchAssets, fetchAssetById, uploadAssets, deleteAsset, updateAsset } from "./thunks";
-import type { Asset } from "./types";
-
-interface AssetsState {
-  assets: Asset[];
-  pagination: {
-    total: number;
-    limit: number;
-    offset: number;
-  };
-  currentAsset: Asset | null;
-  loading: boolean;
-  error: string | null;
-}
+import type { AssetsState } from "./types";
 
 const initialState: AssetsState = {
   assets: [],
@@ -24,6 +12,7 @@ const initialState: AssetsState = {
   currentAsset: null,
   loading: false,
   error: null,
+  uploadMessage: null,
 };
 
 const assetsSlice = createSlice({
@@ -73,8 +62,12 @@ const assetsSlice = createSlice({
       })
       .addCase(uploadAssets.fulfilled, (state, action) => {
         state.loading = false;
-        state.assets.unshift(action.payload);
-        state.pagination.total += 1;
+        const { uploaded, message } = action.payload;
+        if (uploaded && uploaded.length) {
+          state.assets.unshift(...uploaded);
+          state.pagination.total += uploaded.length;
+        }
+        state.uploadMessage = message;
       })
       .addCase(uploadAssets.rejected, (state, action) => {
         state.loading = false;

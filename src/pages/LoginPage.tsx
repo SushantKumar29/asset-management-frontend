@@ -28,7 +28,7 @@ const LoginPage = () => {
       await dispatch(loginUser(data)).unwrap();
       toast.success("Logged in successfully");
     } catch (err) {
-      toast.error((err as Error)?.message || "Signup failed");
+      toast.error((err as Error)?.message || "Login failed");
     }
   };
 

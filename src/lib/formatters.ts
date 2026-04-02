@@ -17,6 +17,11 @@ export const camelize = <T>(input: T): T => {
   return result as T;
 };
 
+export const formatDate = (date?: string) => {
+  if (!date) return new Date().toLocaleString();
+  return new Date(date).toLocaleString();
+};
+
 export const formatBytes = (bytes: number | string) => {
   const num = typeof bytes === "string" ? parseInt(bytes) : bytes;
   if (num === 0) return "0 Bytes";
@@ -41,4 +46,11 @@ export const formatMimeType = (mimeType: string): string => {
   }
 
   return "other";
+};
+
+export const formatDuration = (ms: number) => {
+  if (!ms) return "--";
+  if (ms < 1000) return `${ms}ms`;
+  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
+  return `${(ms / 60000).toFixed(1)}m`;
 };

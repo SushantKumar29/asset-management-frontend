@@ -1,5 +1,6 @@
 import type { RootState } from "@/app/store";
 import Dashboard from "@/components/Dashboard";
+import { PATHS } from "@/constants/path";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -10,18 +11,14 @@ const HomePage = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/login");
+      navigate(PATHS.login);
     }
   }, [isAuthenticated, navigate]);
 
   if (!isAuthenticated) {
     return null;
   }
-  return (
-    <div>
-      <Dashboard />
-    </div>
-  );
+  return <Dashboard />;
 };
 
 export default HomePage;

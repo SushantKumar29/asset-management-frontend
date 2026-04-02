@@ -7,17 +7,17 @@ export default {
       [
         "feat", // New feature
         "fix", // Bug fix
+        "conf", // Configuration
         "docs", // Documentation
-        "style", // Code style
+        "style", // Code style (formatting, missing semicolons)
         "refactor", // Code refactoring
         "perf", // Performance improvement
-        "test", // Testing
-        "chore", // Maintenance tasks
-        "ci", // CI/CD changes
-        "build", // Build system changes
+        "test", // Adding/updating tests
+        "revert", // Revert a previous commit
+        "build", // Build system or dependencies
+        "ci", // CI configuration changes
       ],
     ],
-    "subject-case": [2, "always", "lower-case"],
-    "subject-max-length": [2, "always", 100],
+    "subject-case": [2, "never", ["start-case", "pascal-case"]],
   },
 };

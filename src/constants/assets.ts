@@ -32,3 +32,28 @@ export const ALLOWED_MIME_TYPES = [
 export const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB max
 export const MAX_FILE_COUNT = 10; // Max 10 files
 export const MAX_TAGS_COUNT = 10; // Max 10 tags
+
+export const USAGE_ACTIONS = {
+  view: "view",
+  download: "download",
+};
+
+export const USAGE_CHANNELS = {
+  web: "web",
+  mobile: "mobile",
+};
+
+export const ASSET_TYPES = {
+  image: "image",
+  video: "video",
+  audio: "audio",
+  document: "document",
+  other: "other",
+};
+
+export const ASSET_STATUSES = {
+  pending: "pending",
+  processing: "processing",
+  processed: "processed",
+  failed: "failed",
+};
