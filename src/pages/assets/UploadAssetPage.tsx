@@ -28,7 +28,7 @@ const UploadAssetPage = () => {
         const fileCount = formData.getAll("files").length;
         toast.success(`${fileCount} asset(s) uploaded successfully!`);
       }
-      navigate("/assets");
+      navigate(PATHS.assets);
     } catch (error) {
       toast.error((error as string) || "Upload failed");
       throw error;

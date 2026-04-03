@@ -4,13 +4,8 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Calendar, Tag } from "lucide-react";
 import { formatBytes, formatDate } from "@/lib/formatters";
-import type { Asset } from "@/slices/assets/types";
 import { getStatusBadge } from "@/lib/utils";
-
-interface AssetMetadataProps {
-  asset: Asset;
-  tags: Array<{ id: string; name: string }> | null;
-}
+import { AssetMetadataProps } from "@/shared/types/asset";
 
 const AssetMetadata = ({ asset, tags }: AssetMetadataProps) => {
   return (

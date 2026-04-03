@@ -53,7 +53,7 @@ const AssetDetailsPage = () => {
       try {
         await dispatch(deleteAsset(id!)).unwrap();
         toast.success("Asset deleted successfully");
-        navigate("/assets");
+        navigate(PATHS.assets);
       } catch {
         toast.error("Failed to delete asset");
       }

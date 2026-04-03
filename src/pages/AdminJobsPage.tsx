@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   Select,
   SelectContent,
@@ -18,23 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { RefreshCw, Eye } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { fetchJobs, fetchJobDetails } from "@/slices/jobs/thunks";
 import { clearCurrentJob } from "@/slices/jobs/jobsSlice";
 import type { AppDispatch, RootState } from "@/app/store";
-import { formatDuration } from "@/lib/formatters";
-import { getStatusBadge } from "@/lib/utils";
 import { useNavigate } from "react-router";
 import Loader from "@/shared/ui/Loader";
 import { BackToPrevious } from "@/shared/ui/BackButton";
 import { PATHS } from "@/constants/path";
+import JobDetailDialog from "@/components/jobs/JobDetailDialog";
+import JobList from "@/components/jobs/JobList";
 
 const AdminJobsPage = () => {
   const [statusFilter, setStatusFilter] = useState("all");
@@ -112,131 +96,13 @@ const AdminJobsPage = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Processing Queue</CardTitle>
-            <CardDescription>Recent background jobs and their status</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Job Type</TableHead>
-                    <TableHead>Asset</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Started</TableHead>
-                    <TableHead>Duration</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {jobs.map((job) => (
-                    <TableRow key={job.id}>
-                      <TableCell className="font-medium capitalize">{job.jobType}</TableCell>
-                      <TableCell>{job.assetName || "—"}</TableCell>
-                      <TableCell>
-                        <Badge className={getStatusBadge(job.status)}>{job.status}</Badge>
-                      </TableCell>
-                      <TableCell className="text-sm">
-                        {job.startedAt ? new Date(job.startedAt).toLocaleTimeString() : "—"}
-                      </TableCell>
-                      <TableCell className="text-sm">
-                        {job.status === "running" ? "..." : formatDuration(job.durationMs)}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleViewDetails(job.id)}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+        <JobList jobs={jobs} handleViewDetails={handleViewDetails} />
 
-        <Dialog open={detailsOpen} onOpenChange={handleCloseDetails}>
-          <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Job Details</DialogTitle>
-              <DialogDescription>Detailed information about the background job</DialogDescription>
-            </DialogHeader>
-            {currentJob.job && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Job Type</p>
-                    <p className="font-medium capitalize">{currentJob.job.jobType}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Status</p>
-                    <Badge className={getStatusBadge(currentJob.job.status)}>
-                      {currentJob.job.status}
-                    </Badge>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Asset</p>
-                    <p className="font-medium">{currentJob.job.assetName || "—"}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Duration</p>
-                    <p className="font-medium">{formatDuration(currentJob.job.durationMs)}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Started</p>
-                    <p className="text-sm">
-                      {currentJob.job.startedAt
-                        ? new Date(currentJob.job.startedAt).toLocaleString()
-                        : "—"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Completed</p>
-                    <p className="text-sm">
-                      {currentJob.job.completedAt
-                        ? new Date(currentJob.job.completedAt).toLocaleString()
-                        : "—"}
-                    </p>
-                  </div>
-                </div>
-
-                {currentJob.job.error && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">Error</p>
-                    <p className="text-sm text-error bg-error/10 p-2 rounded">
-                      {currentJob.job.error}
-                    </p>
-                  </div>
-                )}
-
-                {currentJob.logs.length > 0 && (
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">Job Logs</p>
-                    <div className="space-y-2 max-h-60 overflow-y-auto">
-                      {currentJob.logs.map((log, index) => (
-                        <div key={index} className="text-sm border-l-2 border-link pl-3">
-                          <p className="font-medium">{log.step}</p>
-                          <p className="text-muted-foreground">{log.message}</p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {new Date(log.createdAt).toLocaleString()}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
+        <JobDetailDialog
+          detailsOpen={detailsOpen}
+          handleCloseDetails={handleCloseDetails}
+          currentJob={currentJob}
+        />
       </div>
     </div>
   );

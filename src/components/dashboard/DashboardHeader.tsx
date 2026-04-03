@@ -1,6 +1,4 @@
-interface DashboardHeaderProps {
-  userName?: string;
-}
+import { DashboardHeaderProps } from "@/shared/types/dashboard";
 
 const DashboardHeader = ({ userName }: DashboardHeaderProps) => {
   const firstName = userName?.split(" ")[0] || "User";

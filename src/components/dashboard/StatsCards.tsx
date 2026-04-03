@@ -51,10 +51,10 @@ const StatsCards = ({ summary, distribution }: StatsCardsProps) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      {stats.map((stat, index) => {
+      {stats.map((stat) => {
         const Icon = stat.icon;
         return (
-          <Card key={index} className="hover:shadow-lg transition-all hover:-translate-y-1">
+          <Card key={stat.title} className="hover:shadow-lg transition-all hover:-translate-y-1">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 {stat.title}
@@ -94,14 +94,14 @@ const StatsCards = ({ summary, distribution }: StatsCardsProps) => {
             <div className="flex-1">
               <div className="text-sm text-muted-foreground mb-2">Asset Distribution</div>
               <div className="flex gap-4">
-                {distribution?.map((type) => (
-                  <div key={type.type} className="flex items-center gap-2">
-                    {type.type === "image" && <Image className="h-4 w-4 text-link" />}
-                    {type.type === "video" && <Video className="h-4 w-4 text-link" />}
-                    {type.type === "document" && <FileText className="h-4 w-4 text-link" />}
-                    {type.type === "audio" && <Music className="h-4 w-4 text-link" />}
+                {distribution?.map((item) => (
+                  <div key={item.type} className="flex items-center gap-2">
+                    {item.type === "image" && <Image className="h-4 w-4 text-link" />}
+                    {item.type === "video" && <Video className="h-4 w-4 text-link" />}
+                    {item.type === "document" && <FileText className="h-4 w-4 text-link" />}
+                    {item.type === "audio" && <Music className="h-4 w-4 text-link" />}
                     <span className="text-sm font-medium">
-                      {type.type}: {type.count}
+                      {item.type}: {item.count}
                     </span>
                   </div>
                 ))}

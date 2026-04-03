@@ -8,7 +8,7 @@ export const createReport = createAsyncThunk(
   async (params: CreateReportParams, { rejectWithValue }) => {
     try {
       const res = await api.post("/reports/report", {
-        type: params.type,
+        type: params.type, // (usage | performance | compliance | summary)
         from: params.from.toISOString(),
         to: params.to.toISOString(),
       });

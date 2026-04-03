@@ -15,7 +15,7 @@ import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatsCards from "@/components/dashboard/StatsCards";
 import Loader from "@/shared/ui/Loader";
 import { CardSkeleton } from "@/shared/ui/CardSkeleton";
-import { ErrorFallback } from "@/shared/ui/ErrorFallback";
+import { SectionErrorFallback } from "@/shared/ui/ErrorFallback";
 import QuickActions from "./dashboard/QuickActions";
 
 const PopularAssets = lazy(() => import("@/components/dashboard/PopularAssets"));
@@ -61,7 +61,7 @@ const Dashboard = () => {
         <div className="mt-8">
           <ErrorBoundary
             fallback={({ error, resetErrorBoundary }) => (
-              <ErrorFallback
+              <SectionErrorFallback
                 error={error}
                 resetErrorBoundary={resetErrorBoundary}
                 title="Failed to load popular assets"

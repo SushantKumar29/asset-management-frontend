@@ -1,37 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchJobs, fetchJobDetails } from "./thunks";
-
-interface Job {
-  id: string;
-  jobType: string;
-  assetId: string;
-  assetName: string;
-  status: "pending" | "running" | "completed" | "failed";
-  startedAt: string;
-  completedAt: string;
-  durationMs: number;
-  error: string;
-  metadata: unknown;
-  createdAt: string;
-  log_count: number;
-}
-
-interface JobLog {
-  id: string;
-  step: string;
-  message: string;
-  createdAt: string;
-}
-
-interface JobsState {
-  jobs: Job[];
-  currentJob: {
-    job: Job | null;
-    logs: JobLog[];
-  };
-  loading: boolean;
-  error: string | null;
-}
+import { JobsState } from "./types";
 
 const initialState: JobsState = {
   jobs: [],

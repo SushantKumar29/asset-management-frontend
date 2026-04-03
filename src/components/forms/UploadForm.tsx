@@ -126,7 +126,7 @@ const UploadForm = ({ onSubmit, isUploading }: UploadFormProps) => {
               {files.length ? `${files.length}/10 selected` : "Click to upload"}
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              Images, videos, audio, docs (Max 100MB)
+              Images, videos, audio, docs (Max 50MB)
             </p>
           </div>
           <Input
@@ -156,7 +156,10 @@ const UploadForm = ({ onSubmit, isUploading }: UploadFormProps) => {
           </div>
           <div className="space-y-2 max-h-64 overflow-auto">
             {files.map((file, i) => (
-              <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
+              <div
+                key={file.name}
+                className="flex items-center justify-between p-2 rounded-lg bg-muted/50"
+              >
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   <File className="h-4 w-4 shrink-0" />
                   <div className="flex-1 min-w-0">
@@ -202,7 +205,7 @@ const UploadForm = ({ onSubmit, isUploading }: UploadFormProps) => {
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-2">
             {tags.map((tag, i) => (
-              <Badge key={i} variant="secondary" className="gap-1">
+              <Badge key={tag} variant="secondary" className="gap-1">
                 {tag}
                 <button type="button" onClick={() => removeTag(i)} className="hover:text-error">
                   <X className="h-3 w-3" />

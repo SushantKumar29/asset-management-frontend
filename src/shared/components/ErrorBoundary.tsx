@@ -1,5 +1,5 @@
 import { Component, type ErrorInfo } from "react";
-import { ErrorFallback } from "@/shared/ui/ErrorFallback";
+import { SectionErrorFallback } from "@/shared/ui/ErrorFallback";
 import type { ErrorProps, ErrorState } from "../types/errorBoundary";
 
 class ErrorBoundary extends Component<ErrorProps, ErrorState> {
@@ -35,7 +35,10 @@ class ErrorBoundary extends Component<ErrorProps, ErrorState> {
       }
 
       return (
-        <ErrorFallback error={this.state.error!} resetErrorBoundary={this.resetErrorBoundary} />
+        <SectionErrorFallback
+          error={this.state.error!}
+          resetErrorBoundary={this.resetErrorBoundary}
+        />
       );
     }
 

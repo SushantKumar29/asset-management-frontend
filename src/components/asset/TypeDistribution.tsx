@@ -2,8 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import type { Distribution } from "@/slices/analytics/types";
 
-export const TypeDistribution = ({ distribution }: { distribution: Distribution[] | null }) => {
-  if (!distribution?.length) {
+export const TypeDistribution = ({ distributions }: { distributions: Distribution[] | null }) => {
+  if (!distributions?.length) {
     return (
       <Card>
         <CardHeader>
@@ -17,7 +17,7 @@ export const TypeDistribution = ({ distribution }: { distribution: Distribution[
     );
   }
 
-  const maxCount = Math.max(...distribution.map((t) => t.count));
+  const maxCount = Math.max(...distributions.map((t) => t.count));
 
   return (
     <Card>
@@ -27,8 +27,8 @@ export const TypeDistribution = ({ distribution }: { distribution: Distribution[
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          {distribution.map((type) => (
-            <TypeItem key={type.type} type={type} maxCount={maxCount} />
+          {distributions.map((item) => (
+            <TypeItem key={item.type} item={item} maxCount={maxCount} />
           ))}
         </div>
       </CardContent>
@@ -36,15 +36,15 @@ export const TypeDistribution = ({ distribution }: { distribution: Distribution[
   );
 };
 
-const TypeItem = ({ type, maxCount }: { type: Distribution; maxCount: number }) => (
+const TypeItem = ({ item, maxCount }: { item: Distribution; maxCount: number }) => (
   <div>
     <div className="flex justify-between text-sm mb-1">
-      <span className="capitalize">{type.type}</span>
+      <span className="capitalize">{item.type}</span>
       <div className="flex gap-4">
-        <span>{type.count} assets</span>
-        <span className="text-muted-foreground">{type.totalViews} views</span>
+        <span>{item.count} assets</span>
+        <span className="text-muted-foreground">{item.totalViews} views</span>
       </div>
     </div>
-    <Progress value={(type.count / maxCount) * 100} className="h-2" />
+    <Progress value={(item.count / maxCount) * 100} className="h-2" />
   </div>
 );

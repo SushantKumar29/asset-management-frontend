@@ -6,6 +6,7 @@ import type { AppDispatch, RootState } from "@/app/store";
 import { useEffect } from "react";
 import { loginUser } from "@/slices/auth/thunks";
 import LoginForm from "@/components/forms/LoginForm";
+import { PATHS } from "@/constants/path";
 
 type LoginFormValues = {
   email: string;
@@ -19,7 +20,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      navigate(PATHS.root);
     }
   }, [isAuthenticated, navigate]);
 

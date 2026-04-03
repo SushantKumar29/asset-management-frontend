@@ -7,6 +7,7 @@ import SignupForm from "@/components/forms/SignupForm";
 import type { SignupFormData } from "@/lib/validations/signup";
 import type { AppDispatch, RootState } from "@/app/store";
 import { registerUser } from "@/slices/auth/thunks";
+import { PATHS } from "@/constants/path";
 
 const SignupPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,7 +16,7 @@ const SignupPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      navigate(PATHS.root);
     }
   }, [isAuthenticated, navigate]);
 
@@ -23,7 +24,7 @@ const SignupPage = () => {
     try {
       await dispatch(registerUser(data)).unwrap();
       toast.success("Signup successful");
-      navigate("/login");
+      navigate(PATHS.login);
     } catch (err) {
       toast.error((err as Error)?.message || "Signup failed");
     }

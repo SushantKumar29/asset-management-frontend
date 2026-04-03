@@ -76,7 +76,7 @@ const AnalyticsPage = () => {
         <TopAssets assets={popularAssets} />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <TypeDistribution distribution={typeDistribution} />
+          <TypeDistribution distributions={typeDistribution} />
           <EngagementMetrics summary={summary} />
         </div>
       </div>

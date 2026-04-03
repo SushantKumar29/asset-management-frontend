@@ -17,3 +17,8 @@ export interface AssetTabsProps {
     uniqueUsers: number;
   } | null;
 }
+
+export interface AssetMetadataProps {
+  asset: Asset;
+  tags: Array<{ id: string; name: string }> | null;
+}
