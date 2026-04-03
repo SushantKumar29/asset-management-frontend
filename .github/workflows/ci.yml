@@ -1,0 +1,31 @@
+name: Asset Management CI
+
+on:
+  push:
+    branches: [main, development]
+  pull_request:
+    branches: [main, development]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      - name: Security Audit
+        run: npm audit --audit-level=high # Fails CI if high severity vulnerabilities found
+
+      - name: Run Lint
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run test
