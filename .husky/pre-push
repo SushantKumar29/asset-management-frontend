@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Get current branch name
+BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+# Define branches where tests should run
+if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "development" ] || [ "$BRANCH_NAME" = "staging" ]; then
+  npm run lint
+  npm run build
+  npm run test
+else
+  npm run lint
+  npm run format:check
+fi

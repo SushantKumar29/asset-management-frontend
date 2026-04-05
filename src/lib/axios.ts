@@ -1,0 +1,37 @@
+import axios from "axios";
+import { store } from "@/app/store";
+import { logout } from "@/slices/auth/authSlice";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const api = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
+
+api.interceptors.request.use((config) => {
+  const token = store.getState().auth.token;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    const error = {
+      status: err.response?.status,
+      data: err.response?.data,
+      message: err.response?.data?.error || err.response?.data?.message || err.message,
+    };
+
+    if (error.status === 401) {
+      store.dispatch(logout());
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export default api;
