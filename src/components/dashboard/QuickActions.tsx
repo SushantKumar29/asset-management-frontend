@@ -37,7 +37,7 @@ const QuickActions = () => {
   ];
 
   return (
-    <Card className="lg:col-span-2">
+    <Card className="lg:col-span-2 mt-8">
       <CardHeader>
         <CardTitle>Quick Actions</CardTitle>
         <CardDescription>Common tasks and shortcuts</CardDescription>

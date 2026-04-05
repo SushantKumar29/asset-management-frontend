@@ -21,11 +21,6 @@ export interface PopularAssetsProps {
   assets: Array<Asset> | null;
 }
 
-export interface UploadFormProps {
-  onSubmit: (data: FormData) => Promise<void>;
-  isUploading: boolean;
-}
-
 export interface AssetsState {
   assets: Asset[];
   pagination: {

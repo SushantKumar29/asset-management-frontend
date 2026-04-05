@@ -19,20 +19,25 @@ import { BackToPrevious } from "@/shared/ui/BackButton";
 import { PATHS } from "@/constants/path";
 import JobDetailDialog from "@/components/jobs/JobDetailDialog";
 import JobList from "@/components/jobs/JobList";
+import { ROLES } from "@/constants/auth";
 
 const AdminJobsPage = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [detailsOpen, setDetailsOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
   const { jobs, currentJob, loading } = useSelector((state: RootState) => state.jobs);
+  const isAdmin = user?.role === ROLES.admin;
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate(PATHS.login);
     }
-  }, [isAuthenticated, navigate]);
+    if (!isAdmin) {
+      navigate(PATHS.root);
+    }
+  }, [isAuthenticated, navigate, isAdmin]);
 
   useEffect(() => {
     dispatch(fetchJobs({ status: statusFilter !== "all" ? statusFilter : undefined }));
@@ -52,7 +57,7 @@ const AdminJobsPage = () => {
     dispatch(clearCurrentJob());
   };
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !isAdmin) {
     return null;
   }
 

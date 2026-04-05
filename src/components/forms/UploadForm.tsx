@@ -17,7 +17,7 @@ import {
   MAX_TAGS_COUNT,
 } from "@/constants/assets";
 import { formatBytes, formatMimeType } from "@/lib/formatters";
-import type { UploadFormProps } from "@/slices/assets/types";
+import { UploadFormProps } from "@/shared/types/forms";
 
 const UploadForm = ({ onSubmit, isUploading }: UploadFormProps) => {
   const [currentTag, setCurrentTag] = useState("");

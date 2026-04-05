@@ -5,10 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginFormData } from "@/lib/validations/login";
+import { LoginFormProps } from "@/shared/types/forms";
 
-type LoginFormProps = {
-  onSubmit: (data: LoginFormData) => Promise<void>;
-};
 const LoginForm = ({ onSubmit }: LoginFormProps) => {
   const {
     register,

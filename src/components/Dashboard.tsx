@@ -12,12 +12,12 @@ import toast from "react-hot-toast";
 import ErrorBoundary from "@/shared/components/ErrorBoundary";
 
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import StatsCards from "@/components/dashboard/StatsCards";
 import Loader from "@/shared/ui/Loader";
 import { CardSkeleton } from "@/shared/ui/CardSkeleton";
 import { SectionErrorFallback } from "@/shared/ui/ErrorFallback";
 import QuickActions from "./dashboard/QuickActions";
 
+const StatsCards = lazy(() => import("@/components/dashboard/StatsCards"));
 const PopularAssets = lazy(() => import("@/components/dashboard/PopularAssets"));
 
 const Dashboard = () => {
@@ -53,10 +53,20 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <div className="mx-auto container px-4 py-8">
         <DashboardHeader userName={user?.name} />
-        <StatsCards summary={summary} distribution={typeDistribution} />
-        <div className="mt-8">
-          <QuickActions />
-        </div>
+        <ErrorBoundary
+          fallback={({ error, resetErrorBoundary }) => (
+            <SectionErrorFallback
+              error={error}
+              resetErrorBoundary={resetErrorBoundary}
+              title="Failed to load popular assets"
+            />
+          )}
+        >
+          <Suspense fallback={<CardSkeleton />}>
+            <StatsCards summary={summary} distribution={typeDistribution} />
+          </Suspense>
+        </ErrorBoundary>
+        <QuickActions />
 
         <div className="mt-8">
           <ErrorBoundary
