@@ -4,6 +4,7 @@ import ErrorBoundary from "@/shared/components/ErrorBoundary";
 import { PageErrorFallback } from "@/shared/ui/ErrorFallback";
 import { PATHS } from "@/constants/path";
 import Loader from "@/shared/ui/Loader";
+import NotFoundPage from "@/pages/NotFoundPage";
 
 const HomePage = lazy(() => import("@/pages/HomePage"));
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
@@ -29,6 +30,7 @@ const AppRoutes = () => {
           <Route path={PATHS.analytics} element={<AnalyticsPage />} />
           <Route path={PATHS.assetsDetails} element={<AssetDetailsPage />} />
           <Route path={PATHS.jobs} element={<AdminJobsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </ErrorBoundary>
